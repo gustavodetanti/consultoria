@@ -31,7 +31,8 @@
   left:24px;
  
   padding: 24px;
- 
+ opacity:0;
+ transition: opacity 0.8s ease-in-out;
 }
 .texto h1{color:white;
 
@@ -288,16 +289,17 @@ let seed = Math.random()*1000000; // You can change this to any number
 let perlin = new PerlinNoise(seed);
 let noiseImage;// = perlin.createNoiseImage(w, h, 0.05, 4, 0.5, 2.0);
 //document.body.appendChild(noiseImage);
-
-for(var i=0;i<10;i++){
-
-}
+ 
 let ImgDiv=document.querySelector('.image');
-
-
+ 
+let textoDiv=document.querySelector('.texto');
+ 
 setInterval(()=>{
   addImage();
 },4000);
+setInterval(()=>{
+  textoDiv.style.opacity=1;
+},1000),
 addImage();
 
 function addImage(){
