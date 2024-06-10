@@ -203,3 +203,118 @@ setTimeout(()=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  function getRandomPointInEllipse(rx, ry) {
+    let angle = Math.random() * Math.PI * 2;
+    let u = Math.random() + Math.random();
+    let r = u > 1 ? 2 - u : u;
+    let x = r * Math.cos(angle) * rx;
+    let y = r * Math.sin(angle) * ry;
+    return { x, y };
+  }
+  
+  function createOrganelle(cx, cy, width, height, color) {
+    let numPoints = Math.random()*7+3; // Number of points around the organelle
+    let angleStep = (Math.PI * 2) / numPoints;
+    let points = [];
+    let d = `M `;
+  
+    // Generate points around the center
+    for (let i = 0; i < numPoints; i++) {
+        let angle = i * angleStep;
+        let randomOffsetX = getRandomInt(-width / 4, width / 4);
+        let randomOffsetY = getRandomInt(-height / 4, height / 4);
+        let x = cx + (Math.cos(angle) * width) / 2 + randomOffsetX;
+        let y = cy + (Math.sin(angle) * height) / 2 + randomOffsetY;
+        points.push({ x, y });
+    }
+  
+    // Create path data using quadratic Bezier curves
+    for (let i = 0; i < points.length; i++) {
+        let p1 = points[i];
+        let p2 = points[(i + 1) % points.length];
+        let cpX = (p1.x + p2.x) / 2 + getRandomInt(-width / 8, width / 8);
+        let cpY = (p1.y + p2.y) / 2 + getRandomInt(-height / 8, height / 8);
+        d += `${i === 0 ? '' : 'Q ' + cpX + ' ' + cpY + ', '}${p2.x} ${p2.y} `;
+    }
+    d += 'Z';
+  
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+   path.setAttribute('class', 'organelle1');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', color);
+  
+  
+    return path;
+  }
+  
+  let svg,orgs;
+  document.addEventListener('DOMContentLoaded', () => {
+     svg = document.getElementById('cell-svg');
+     orgs=svg.querySelector('.added');
+    // Create and append random organelles
+    for (let i = 0; i < 24; i++) {
+      addOrg();
+    }
+    setInterval(()=>{
+  
+      addOrg(true);
+  
+  
+    },1000);
+  });
+  
+  function addOrg(rem){
+  if(rem ) {
+  let toremove=orgs.querySelectorAll('.organelle1')[0];
+  toremove.style.opacity=0;
+  setTimeout(()=>{orgs.removeChild(toremove)},800);
+  
+  }
+  
+  let { x: cx, y: cy } = getRandomPointInEllipse(500, 300);
+        cx += 600; // Adjust to SVG center
+        cy += 150; // Adjust to SVG center
+        let organelle = createOrganelle(cx, cy, 80, 40, '#ffffff33');
+        if(rem){
+          organelle.style.opacity=0;
+          organelle.style.transition='none';
+  
+  requestAnimationFrame(()=>{
+    organelle.style.opacity=1;
+          organelle.style.transition='opacity 0.6s ease-in-out';
+  
+  });
+  
+        }
+        orgs.appendChild(organelle);
+  
+  }
