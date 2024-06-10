@@ -1,3 +1,96 @@
-body{
-  margin:0;
-}
+
+:root{
+
+  --col1:#88cbff;
+  --col2:#ff91ff;
+  --col3:#cdffb7;
+  --col4:#ffef94;
+  
+  
+  }
+  
+      body{
+        margin: 0;
+        background-color: white;
+         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+         color:#555555;
+         letter-spacing: 1px;
+      }
+  
+  .texto{
+    position: absolute;
+    top:24px;
+    left:24px;
+   
+    padding: 24px;
+   opacity:0;
+   transition: opacity 0.8s ease-in-out;
+  }
+  .texto h1{color:white;
+  
+  font-size: 60px;
+  }
+  .texto .citem{
+    font-size: small;
+    margin:50px  0 0 0;
+    background-color: #000000bb;
+    padding:12px 18px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .texto .citem:nth-child(1){
+    color:var(--col1);
+  }
+  .texto .citem:nth-child(2){
+    color:var(--col2);
+  }
+  .texto .citem:nth-child(3){
+    color:var(--col3);
+  }
+  .texto .citem:nth-child(4){
+    color:var(--col4);
+  }
+  
+  img,canvas{
+    width:100%;
+    border-bottom: 0px solid #111111;
+  }
+  .image{
+    width:100vw;
+    height:100vh;
+    position:relative;
+  }
+  .image img, .image canvas{
+    width:100vw;
+    height:100vh;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+  
+  }
+  
+  
+  .membrane {
+              fill: none;
+              stroke: #000;
+              stroke-width: 1;
+          }
+          .nucleus {
+              fill: #5049257c;
+              stroke: #000;
+              stroke-width: 0;
+          }
+          .organelle {
+              fill: #87ceebaa;
+              stroke: #000;
+              stroke-width: 0;
+  opacity:0.8;
+          }
+          .dna {
+              fill: none;
+              stroke: #ffffff;
+              stroke-width: 2;
+          }
+   
