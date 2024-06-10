@@ -1,5 +1,5 @@
 (() => {
-  // src/index.src.js
+  // src/PerlinNoise.js
   var PerlinNoise = class {
     constructor(seed2 = Math.random()) {
       this.grad3 = [
@@ -143,6 +143,8 @@
       return canvas;
     }
   };
+
+  // src/index.src.js
   var w = window.innerWidth;
   var h = window.innerHeight;
   var seed = Math.random() * 1e6;
