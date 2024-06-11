@@ -69,7 +69,7 @@
       let BB = this.perm[B + 1] + Z;
       return this.lerp(w2, this.lerp(v, this.lerp(u, this.grad(this.perm[AA], x, y, z), this.grad(this.perm[BA], x - 1, y, z)), this.lerp(u, this.grad(this.perm[AB], x, y - 1, z), this.grad(this.perm[BB], x - 1, y - 1, z))), this.lerp(v, this.lerp(u, this.grad(this.perm[AA + 1], x, y, z - 1), this.grad(this.perm[BA + 1], x - 1, y, z - 1)), this.lerp(u, this.grad(this.perm[AB + 1], x, y - 1, z - 1), this.grad(this.perm[BB + 1], x - 1, y - 1, z - 1))));
     }
-    generate2DNoise(width, height, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
+    generate2DNoise(width = 1e3, height = 1e3, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
       let noiseArray = [];
       for (let y = 0; y < height; y++) {
         let row = [];
@@ -88,7 +88,7 @@
       }
       return noiseArray;
     }
-    generate3DNoise(width, height, depth, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
+    generate3DNoise(width = 1e3, height = 500, depth = 10, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
       let noiseArray = [];
       for (let z = 0; z < depth; z++) {
         let slice = [];
@@ -111,7 +111,7 @@
       }
       return noiseArray;
     }
-    createNoiseImage(width, height, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
+    createNoiseImage(width = 400, height = 400, scale = 0.1, octaves = 1, persistence = 0.5, lacunarity = 2) {
       let noiseArray = this.generate2DNoise(width, height, scale, octaves, persistence, lacunarity);
       let canvas = document.createElement("canvas");
       canvas.width = width;
@@ -148,16 +148,24 @@
   var w = window.innerWidth;
   var h = window.innerHeight;
   var seed = Math.random() * 1e6;
-  var perlin = new PerlinNoise(seed);
+  var perlin;
   var noiseImage;
   var ImgDiv = document.querySelector(".image");
   var textoDiv = document.querySelector(".texto");
+  var links = [...document.querySelectorAll(".texto .citem")];
+  links.forEach((l) => {
+    l.addEventListener("click", clk);
+    console.log(l);
+  });
   setInterval(() => {
     addImage();
   }, 4e3);
   setInterval(() => {
     textoDiv.style.opacity = 1;
   }, 1e3), addImage();
+  function clk(e) {
+    console.log("clk", this.getAttribute("data-folder"));
+  }
   function addImage() {
     seed = Math.random() * 1e3;
     perlin = new PerlinNoise(seed);
@@ -174,4 +182,34 @@
       noiseImage.style.opacity = 1;
     }, 500);
   }
+  (() => {
+    function loadImages() {
+      const folderPath = "img";
+      fetch("src/getImages.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          folderPath
+        })
+      }).then((response) => response.json()).then((data) => {
+        const imageContainer = document.querySelector(".imgs");
+        imageContainer.innerHTML = "";
+        if (Array.isArray(data)) {
+          data.forEach((image) => {
+            const img = document.createElement("img");
+            img.src = `src/${folderPath}/${image}`;
+            img.style.height = "300px";
+            img.style.width = "auto";
+            img.style.margin = "0 20px 20px 0";
+            img.style.display = "inline-block";
+            imageContainer.appendChild(img);
+          });
+        } else {
+          console.error("Error:", data.error);
+        }
+      }).catch((error) => console.error("Error:", error));
+    }
+  })();
 })();
