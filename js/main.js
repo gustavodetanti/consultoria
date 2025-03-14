@@ -128,8 +128,8 @@
             imageData.data[index + 2] = value;
           }
           if (value < 65) {
-            imageData.data[index] = 180;
-            imageData.data[index + 1] = 190;
+            imageData.data[index] = 140;
+            imageData.data[index + 1] = 170;
             imageData.data[index + 2] = 30;
           } else {
             imageData.data[index] = value * 1;
@@ -155,7 +155,7 @@
   var links = [...document.querySelectorAll(".texto .citem")];
   links.forEach((l) => {
     l.addEventListener("click", clk);
-    console.log(l);
+ 
   });
   setInterval(() => {
     addImage();
